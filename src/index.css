@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ここで上書きしないとスクロールバーのCSSが崩れる */
+/* 要検証 */
+body::-webkit-scrollbar {
+  display: none
+}
