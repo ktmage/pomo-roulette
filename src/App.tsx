@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import buttonSfxUrl from './assets/button.mp3';
 import alertSfxUrl from './assets/alert.mp3';
 import useSound from 'use-sound';
-import { SettingIcon, TaskIcon } from './components/icons';
+import { QuestionIcon, TaskIcon } from './components/icons';
 
 const PomodoroTimer = () => {
 	interface Task {
@@ -67,7 +67,8 @@ const PomodoroTimer = () => {
 				setTimeLeft(BreakTime);
 			} else {
 				// 次のタスクをランダムで選択する
-				const nextTask = tasks[Math.floor(Math.random() * tasks.length)];
+				// const nextTask = tasks[Math.floor(Math.random() * tasks.length)];
+				const nextTask = getNewTask();
 				setCurrentTask(nextTask);
 
 				setTimeLeft(WorkTime);
@@ -85,6 +86,20 @@ const PomodoroTimer = () => {
 		};
 	}, [isRunning, timeLeft]);
 
+	const getNewTask = (): Task => {
+		// すべてのタスクからランダムで一つを選択する。しかし、priorityで重みづけを行う。
+		const totalPriority = tasks.reduce((acc, task) => acc + task.priority, 0);
+		const random = Math.random() * totalPriority;
+		let sum = 0;
+		for (let i = 0; i < tasks.length; i++) {
+			sum += tasks[i].priority;
+			if (random < sum) {
+				return tasks[i];
+			}
+		}
+		return tasks[0];
+	};
+
 	// 残り時間を分:秒の形式にフォーマットする関数
 	const formatTime = (): string => {
 		const minutes = Math.floor(timeLeft / 60);
@@ -92,20 +107,30 @@ const PomodoroTimer = () => {
 		return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 	};
 
-	const handleStart = (): void => {
+	const startTimer = (): void => {
 		playButtonSFX();
 		setIsRunning(true);
 	};
 
-	const handleStop = (): void => {
+	const stopTimer = (): void => {
 		playButtonSFX();
 		setIsRunning(false);
 	};
 
-	const handleAlertStop = (): void => {
+	const stopAlert = (): void => {
 		playButtonSFX();
 		stopAlertSFX();
 		setIsAlertPlaying(false);
+	};
+
+	const handleButtonClick = (): void => {
+		if (isAlertPlaying) {
+			stopAlert();
+		} else if (isRunning) {
+			stopTimer();
+		} else {
+			startTimer();
+		}
 	};
 
 	const handleValueChange = (index: number, value: string) => {
@@ -118,11 +143,12 @@ const PomodoroTimer = () => {
 		setTasks(newTasks);
 	};
 
+	// ${isWorking ? 'bg-gradient-to-r from-slate-900 to-slate-700' : 'bg-gradient-to-b from-neutral-300 to-stone-400'}`}
 	return (
 		<div
-			className={`text-white p-8 rounded-lg flex flex-col items-center justify-center min-h-screen min-w-screen transition-all duration-500 ${isWorking ? 'bg-gradient-to-r from-red-500 to-orange-500' : 'bg-gradient-to-r from-emerald-400 to-cyan-400'}`}
+			className={`text-white p-8 rounded-lg flex flex-col items-center justify-center min-h-screen min-w-screen transition-all duration-500 
+        ${isWorking ? 'bg-gradient-to-r from-red-500 to-orange-500' : 'bg-gradient-to-r from-emerald-400 to-cyan-400'}`}
 		>
-			<h1 className='text-4xl font-bold mb-8'>{currentTask?.name}</h1>
 			<div className='absolute top-4 right-4 space-x-4'>
 				<label
 					htmlFor='my-drawer'
@@ -138,7 +164,7 @@ const PomodoroTimer = () => {
 						modal.showModal();
 					}}
 				>
-					<SettingIcon fontSize={24} />
+					<QuestionIcon fontSize={24} />
 				</button>
 			</div>
 
@@ -215,7 +241,21 @@ const PomodoroTimer = () => {
 			</div>
 
 			<dialog className='modal'>
-				<div className='modal-box'></div>
+				<div className='modal-box'>
+					<div className='form-control'>
+						<label className='label'>
+							<span className='label-text'>Work Time</span>
+						</label>
+						<input
+							type='number'
+							className='input input-primary'
+							value={WorkTime}
+							onChange={(e) => {
+								setTimeLeft(Number(e.target.value));
+							}}
+						/>
+					</div>
+				</div>
 				<form
 					method='dialog'
 					className='modal-backdrop'
@@ -224,32 +264,16 @@ const PomodoroTimer = () => {
 				</form>
 			</dialog>
 
-			<div className='flex flex-col items-center justify-center backdrop-blur-sm bg-white/30 px-24 py-14 rounded-md'>
-				<div className='text-8xl mb-8'>{formatTime()}</div>
+			<div className='flex flex-col items-center justify-between min-h-80 space-y-10'>
+				<h1 className='text-4xl'>{currentTask ? currentTask.name : 'POMO-ROULETTE'}</h1>
+				<div className=' text-9xl'>{formatTime()}</div>
 				<div className='space-x-8'>
-					{isAlertPlaying ? (
-						<button
-							className='btn btn-primary px-6 py-2'
-							onClick={handleAlertStop}
-						>
-							Stop
-						</button>
-					) : (
-						<>
-							<button
-								className='btn btn-primary px-6 py-2 mr-2'
-								onClick={handleStart}
-							>
-								Start
-							</button>
-							<button
-								className='btn btn-primary px-6 py-2'
-								onClick={handleStop}
-							>
-								Stop
-							</button>
-						</>
-					)}
+					<button
+						className='btn btn-neutral px-6 py-2 '
+						onClick={handleButtonClick}
+					>
+						{isAlertPlaying ? 'Stop Alert' : isRunning ? 'Stop' : 'Start'}
+					</button>
 				</div>
 			</div>
 		</div>
