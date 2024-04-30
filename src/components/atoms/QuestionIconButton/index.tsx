@@ -1,4 +1,4 @@
-import { QuestionIcon } from '@/components/icons';
+import { QuestionIcon } from '@/utils/icons';
 
 interface QuestionIconButtonProps {
 	onClick: () => void;
