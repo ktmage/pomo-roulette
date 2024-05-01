@@ -51,9 +51,7 @@ const App = () => {
 					</div>
 
 					<div className='flex flex-col items-center justify-between min-h-80 space-y-10'>
-						<h1 className='text-4xl'>
-							{currentTask ? currentTask.name : 'POMO-ROULETTE'}
-						</h1>
+						<h1 className='text-4xl'>{currentTask ? currentTask.name : 'POMOTTE'}</h1>
 						<div className=' text-9xl'>{formatTime()}</div>
 						<div className='space-x-8'>
 							<button
@@ -127,7 +125,6 @@ const App = () => {
 							<div className='divider'></div>
 						</div>
 					))}
-					{/* Task creation form */}
 					<li>
 						<input
 							type='text'
