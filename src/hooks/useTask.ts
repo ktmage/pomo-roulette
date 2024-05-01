@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // type Priority = 1 | 2 | 3 | 4 | 5;
 
@@ -9,7 +9,7 @@ interface Task {
 }
 
 export default function useTask() {
-	const [tasks, setTasks] = useState<Task[]>([]);
+	const [tasks, setTasks] = useState<Task[]>(initTasks());
 	const [newTask, setNewTask] = useState<string>('');
 	const [currentTask, setCurrentTask] = useState<Task | null>(null);
 
@@ -51,6 +51,21 @@ export default function useTask() {
 		});
 		setTasks(newTasks);
 	}
+
+	// ローカルストレージからタスクを取得する関数
+	function initTasks() {
+		const value = localStorage.getItem('tasks');
+		return value ? JSON.parse(value) : [];
+	}
+
+	// タスクをローカルストレージに保存する関数
+	function saveTasks() {
+		localStorage.setItem('tasks', JSON.stringify(tasks));
+	}
+
+	useEffect(() => {
+		saveTasks();
+	}, [tasks]);
 
 	return {
 		drawTask,
