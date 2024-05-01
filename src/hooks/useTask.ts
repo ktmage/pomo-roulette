@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useLocalStorage from './useLocalStorage';
 
 // type Priority = 1 | 2 | 3 | 4 | 5;
 
@@ -9,7 +10,7 @@ interface Task {
 }
 
 export default function useTask() {
-	const [tasks, setTasks] = useState<Task[]>([]);
+	const [tasks, setTasks] = useLocalStorage<Task[]>({ key: 'tasks', initialValue: [] });
 	const [newTask, setNewTask] = useState<string>('');
 	const [currentTask, setCurrentTask] = useState<Task | null>(null);
 

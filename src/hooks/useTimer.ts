@@ -2,6 +2,7 @@ import useSound from 'use-sound';
 import alertSfxUrl from '@/assets/alert.mp3';
 import buttonSfxUrl from '@/assets/button.mp3';
 import { useEffect, useState } from 'react';
+import useLocalStorage from './useLocalStorage';
 
 interface useTimerProps {
 	onTimeUp?: () => void;
@@ -10,11 +11,11 @@ interface useTimerProps {
 }
 
 export default function useTimer(props?: useTimerProps) {
-	// // 作業時間と休憩時間を定義
+	// 作業時間と休憩時間を定義
 	const WorkTime = 25 * 60;
 	const BreakTime = 5 * 60;
 
-	const [rap, setRap] = useState(0);
+	const [lapCount, setLapCount] = useLocalStorage({ key: 'lapCount', initialValue: 0 });
 	const [timeLeft, setTimeLeft] = useState(WorkTime);
 	const [isRunning, setIsRunning] = useState(false);
 	const [isWorking, setIsWorking] = useState(true);
@@ -52,7 +53,7 @@ export default function useTimer(props?: useTimerProps) {
 			setIsWorking(false);
 			setTimeLeft(BreakTime);
 		} else {
-			setRap((rap) => rap + 1);
+			setLapCount((lap) => lap + 1);
 			setIsWorking(true);
 			setTimeLeft(WorkTime);
 		}
@@ -99,5 +100,5 @@ export default function useTimer(props?: useTimerProps) {
 		}
 	}
 
-	return { formatTime, handleClicked, isRunning, isWorking, isAlertPlaying, rap };
+	return { formatTime, handleClicked, isRunning, isWorking, isAlertPlaying, lapCount };
 }
