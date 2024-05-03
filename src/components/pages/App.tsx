@@ -1,5 +1,6 @@
 import { useTask, useTimer } from '@/hooks';
 import { QuestionIcon, TaskIcon } from '../../utils/icons';
+import { Background } from '../atoms';
 
 const App = () => {
 	const {
@@ -12,11 +13,9 @@ const App = () => {
 		setNewTask,
 		currentTask,
 	} = useTask();
-	const { formatTime, handleClicked, isRunning, isWorking, isAlertPlaying } = useTimer({
-		onTimerStart() {
-			if (isWorking) {
-				drawTask();
-			}
+	const { formatTime, play, isRunning, isWorking, isAlertPlaying } = useTimer({
+		onStartLap: () => {
+			drawTask();
 		},
 	});
 
@@ -28,41 +27,46 @@ const App = () => {
 				className='drawer-toggle'
 			/>
 			<div className='drawer-content'>
-				<div
-					className={`text-white p-8 rounded-lg flex flex-col items-center justify-center min-h-screen min-w-screen transition-all duration-500 
-            ${isWorking ? 'bg-gradient-to-r from-red-500 to-orange-500' : 'bg-gradient-to-r from-emerald-400 to-cyan-400'}`}
-				>
-					<div className='absolute top-4 right-4 space-x-4'>
-						<label
-							htmlFor='my-drawer'
-							className='btn btn-circle drawer-button'
-						>
-							<TaskIcon fontSize={24} />
-						</label>
-						<button
-							className='btn btn-circle'
-							onClick={() => {
-								const modal = document.querySelector('.modal') as HTMLDialogElement;
-								modal.showModal();
-							}}
-						>
-							<QuestionIcon fontSize={24} />
-						</button>
-					</div>
-
-					<div className='flex flex-col items-center justify-between min-h-80 space-y-10'>
-						<h1 className='text-4xl'>{currentTask ? currentTask.name : 'POMOTTE'}</h1>
-						<div className=' text-9xl'>{formatTime()}</div>
-						<div className='space-x-8'>
-							<button
-								className='btn btn-neutral px-6 py-2 '
-								onClick={handleClicked}
+				<Background flag={isWorking}>
+					<div
+						className={`text-white p-8 rounded-lg flex flex-col items-center justify-center min-h-screen min-w-screen transition-all duration-500`}
+					>
+						<div className='absolute top-4 right-4 space-x-4'>
+							<label
+								htmlFor='my-drawer'
+								className='btn btn-circle drawer-button'
 							>
-								{isAlertPlaying ? 'Stop Alert' : isRunning ? 'Stop' : 'Start'}
+								<TaskIcon fontSize={24} />
+							</label>
+							<button
+								className='btn btn-circle'
+								onClick={() => {
+									const modal = document.querySelector(
+										'.modal',
+									) as HTMLDialogElement;
+									modal.showModal();
+								}}
+							>
+								<QuestionIcon fontSize={24} />
 							</button>
 						</div>
+
+						<div className='flex flex-col items-center justify-between min-h-80 space-y-10'>
+							<h1 className='text-4xl'>
+								{currentTask ? currentTask.name : 'POMOTTE'}
+							</h1>
+							<div className=' text-9xl'>{formatTime()}</div>
+							<div className='space-x-8'>
+								<button
+									className='btn btn-neutral px-6 py-2 '
+									onClick={play}
+								>
+									{isAlertPlaying ? 'Stop Alert' : isRunning ? 'Stop' : 'Start'}
+								</button>
+							</div>
+						</div>
 					</div>
-				</div>
+				</Background>
 			</div>
 			<dialog className='modal'>
 				<div className='modal-box'>

@@ -6,20 +6,25 @@ import useLocalStorage from './useLocalStorage';
 
 interface useTimerProps {
 	onTimeUp?: () => void;
-	onTimerStart?: () => void;
-	onTimerStop?: () => void;
+	onStartTimer?: () => void;
+	onStopTimer?: () => void;
+	onResetTimer?: () => void;
+	onStartLap?: () => void;
 }
 
 export default function useTimer(props?: useTimerProps) {
 	// 作業時間と休憩時間を定義
 	const WorkTime = 25 * 60;
 	const BreakTime = 5 * 60;
+	// const WorkTime = 2;
+	// const BreakTime = 1;
 
 	const [lapCount, setLapCount] = useLocalStorage({ key: 'lapCount', initialValue: 0 });
 	const [timeLeft, setTimeLeft] = useState(WorkTime);
 	const [isRunning, setIsRunning] = useState(false);
 	const [isWorking, setIsWorking] = useState(true);
 	const [isAlertPlaying, setIsAlertPlaying] = useState(false);
+	const [isReady, setIsReady] = useState(true);
 	const [playAlertSFX, { stop: stopAlertSFX }] = useSound(alertSfxUrl, { loop: true });
 	const [playButtonSFX] = useSound(buttonSfxUrl);
 
@@ -36,7 +41,7 @@ export default function useTimer(props?: useTimerProps) {
 		// 残り時間が0秒以下の場合
 		else if (timeLeft <= 0) {
 			setIsRunning(false);
-			onTimeUp();
+			timeUp();
 		}
 
 		return () => {
@@ -45,30 +50,27 @@ export default function useTimer(props?: useTimerProps) {
 	}, [isRunning, timeLeft]);
 
 	// タイマーが0になった時の処理
-	function onTimeUp() {
+	function timeUp() {
 		props?.onTimeUp && props.onTimeUp();
-		onTimerStop();
-		playAlert();
-		if (isWorking) {
-			setIsWorking(false);
-			setTimeLeft(BreakTime);
-		} else {
-			setLapCount((lap) => lap + 1);
-			setIsWorking(true);
-			setTimeLeft(WorkTime);
+		// 休憩時間が終わったらReady状態にする
+		if (!isWorking) {
+			setIsReady(true);
 		}
+		setIsRunning(false);
+		playAlert();
+		resetTimer();
 	}
 
 	// タイマーをスタートする関数
-	function onTimerStart() {
-		props?.onTimerStart && props.onTimerStart();
+	function startTimer() {
+		props?.onStartTimer && props.onStartTimer();
 		setIsRunning(true);
 		playButtonSFX();
 	}
 
 	// タイマーをストップする関数
-	function onTimerStop() {
-		props?.onTimerStop && props.onTimerStop();
+	function stopTimer() {
+		props?.onStopTimer && props.onStopTimer();
 		setIsRunning(false);
 		playButtonSFX();
 	}
@@ -90,15 +92,30 @@ export default function useTimer(props?: useTimerProps) {
 		stopAlertSFX();
 	};
 
-	function handleClicked() {
+	const resetTimer = () => {
+		if (isWorking) {
+			setIsWorking(false);
+			setTimeLeft(BreakTime);
+		} else {
+			setLapCount((lap) => lap + 1);
+			setIsWorking(true);
+			setTimeLeft(WorkTime);
+		}
+	};
+
+	function play() {
 		if (isAlertPlaying) {
 			stopAlert();
 		} else if (isRunning) {
-			onTimerStop();
+			stopTimer();
+		} else if (isReady) {
+			props?.onStartLap && props.onStartLap();
+			setIsReady(false);
+			startTimer();
 		} else {
-			onTimerStart();
+			startTimer();
 		}
 	}
 
-	return { formatTime, handleClicked, isRunning, isWorking, isAlertPlaying, lapCount };
+	return { formatTime, play, isRunning, isWorking, isAlertPlaying, lapCount };
 }
