@@ -14,10 +14,10 @@ interface useTimerProps {
 
 export default function useTimer(props?: useTimerProps) {
 	// 作業時間と休憩時間を定義
-	// const WorkTime = 25 * 60;
-	// const BreakTime = 5 * 60;
-	const WorkTime = 2;
-	const BreakTime = 1;
+	const WorkTime = 25 * 60;
+	const BreakTime = 5 * 60;
+	// const WorkTime = 2;
+	// const BreakTime = 1;
 
 	const [lapCount, setLapCount] = useLocalStorage({ key: 'lapCount', initialValue: 0 });
 	const [timeLeft, setTimeLeft] = useState(WorkTime);
