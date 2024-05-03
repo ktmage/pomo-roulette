@@ -13,11 +13,9 @@ const App = () => {
 		setNewTask,
 		currentTask,
 	} = useTask();
-	const { formatTime, handleClicked, isRunning, isWorking, isAlertPlaying } = useTimer({
-		onTimerStart() {
-			if (isWorking) {
-				drawTask();
-			}
+	const { formatTime, play, isRunning, isWorking, isAlertPlaying } = useTimer({
+		onStartLap: () => {
+			drawTask();
 		},
 	});
 
@@ -61,7 +59,7 @@ const App = () => {
 							<div className='space-x-8'>
 								<button
 									className='btn btn-neutral px-6 py-2 '
-									onClick={handleClicked}
+									onClick={play}
 								>
 									{isAlertPlaying ? 'Stop Alert' : isRunning ? 'Stop' : 'Start'}
 								</button>
