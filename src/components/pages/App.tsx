@@ -27,7 +27,10 @@ const App = () => {
 				type='checkbox'
 				className='drawer-toggle'
 			/>
+
+			{/* 本体 */}
 			<div className='drawer-content'>
+				{/* メイン画面 */}
 				<Background flag={isWorking}>
 					<div
 						className={`text-white p-8 rounded-lg flex flex-col items-center justify-center min-h-screen min-w-screen transition-all duration-500`}
@@ -80,6 +83,8 @@ const App = () => {
 						</div>
 					</div>
 				</Background>
+
+				{/* モーダルで表示する画面 */}
 				<dialog
 					className='modal'
 					id='instruction-modal'
@@ -109,6 +114,8 @@ const App = () => {
 					</form>
 				</dialog>
 			</div>
+
+			{/* ドロワーのメイン画面 */}
 			<div className='drawer-side'>
 				<label
 					htmlFor='my-drawer'
