@@ -1,5 +1,5 @@
 import { useTask, useTimer } from '@/hooks';
-import { QuestionIcon, SettingsIcon, TaskIcon } from '../../utils/icons';
+import { CloseIcon, QuestionIcon, SettingsIcon, TaskIcon } from '../../utils/icons';
 import { Background } from '../atoms';
 import { Instructions, Settings } from '../modules';
 
@@ -36,12 +36,6 @@ const App = () => {
 						className={`text-white p-8 rounded-lg flex flex-col items-center justify-center min-h-screen min-w-screen transition-all duration-500`}
 					>
 						<div className='absolute top-4 right-4 space-x-4'>
-							<label
-								htmlFor='my-drawer'
-								className='btn btn-circle drawer-button'
-							>
-								<TaskIcon fontSize={24} />
-							</label>
 							<button
 								className='btn btn-circle'
 								onClick={() => {
@@ -53,7 +47,12 @@ const App = () => {
 							>
 								<QuestionIcon fontSize={24} />
 							</button>
-
+							<label
+								htmlFor='my-drawer'
+								className='btn btn-circle drawer-button'
+							>
+								<TaskIcon fontSize={24} />
+							</label>
 							<button
 								className='btn btn-circle'
 								onClick={() => {
@@ -96,7 +95,7 @@ const App = () => {
 						method='dialog'
 						className='modal-backdrop'
 					>
-						<button>close</button>
+						<button />
 					</form>
 				</dialog>
 				<dialog
@@ -110,7 +109,7 @@ const App = () => {
 						method='dialog'
 						className='modal-backdrop'
 					>
-						<button>close</button>
+						<button />
 					</form>
 				</dialog>
 			</div>
@@ -139,7 +138,7 @@ const App = () => {
 											deleteTask(task.id);
 										}}
 									>
-										×
+										<CloseIcon fontSize={12} />
 									</button>
 								</div>
 								<input
