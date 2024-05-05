@@ -1,6 +1,7 @@
 import { useTask, useTimer } from '@/hooks';
-import { QuestionIcon, TaskIcon } from '../../utils/icons';
+import { QuestionIcon, SettingsIcon, TaskIcon } from '../../utils/icons';
 import { Background } from '../atoms';
+import { Instructions, Settings } from '../modules';
 
 const App = () => {
 	const {
@@ -26,7 +27,10 @@ const App = () => {
 				type='checkbox'
 				className='drawer-toggle'
 			/>
+
+			{/* 本体 */}
 			<div className='drawer-content'>
+				{/* メイン画面 */}
 				<Background flag={isWorking}>
 					<div
 						className={`text-white p-8 rounded-lg flex flex-col items-center justify-center min-h-screen min-w-screen transition-all duration-500`}
@@ -41,13 +45,25 @@ const App = () => {
 							<button
 								className='btn btn-circle'
 								onClick={() => {
-									const modal = document.querySelector(
-										'.modal',
+									const modal = document.getElementById(
+										'instruction-modal',
 									) as HTMLDialogElement;
 									modal.showModal();
 								}}
 							>
 								<QuestionIcon fontSize={24} />
+							</button>
+
+							<button
+								className='btn btn-circle'
+								onClick={() => {
+									const modal = document.getElementById(
+										'settings-modal',
+									) as HTMLDialogElement;
+									modal.showModal();
+								}}
+							>
+								<SettingsIcon fontSize={24} />
 							</button>
 						</div>
 
@@ -67,30 +83,39 @@ const App = () => {
 						</div>
 					</div>
 				</Background>
-			</div>
-			<dialog className='modal'>
-				<div className='modal-box'>
-					<h1>How to use</h1>
-					<hr />
-					<br />
-					<p>
-						1. If you want to use the task options, add tasks from the button in the
-						upper right.
-					</p>
-					<br />
-					<p>
-						2. By setting the priority, you can adjust the lottery degree of the task.
-					</p>
-					<br />
-					<p>3. Start the timer.</p>
-				</div>
-				<form
-					method='dialog'
-					className='modal-backdrop'
+
+				{/* モーダルで表示する画面 */}
+				<dialog
+					className='modal'
+					id='instruction-modal'
 				>
-					<button>close</button>
-				</form>
-			</dialog>
+					<div className='modal-box'>
+						<Instructions />
+					</div>
+					<form
+						method='dialog'
+						className='modal-backdrop'
+					>
+						<button>close</button>
+					</form>
+				</dialog>
+				<dialog
+					className='modal'
+					id='settings-modal'
+				>
+					<div className='modal-box'>
+						<Settings />
+					</div>
+					<form
+						method='dialog'
+						className='modal-backdrop'
+					>
+						<button>close</button>
+					</form>
+				</dialog>
+			</div>
+
+			{/* ドロワーのメイン画面 */}
 			<div className='drawer-side'>
 				<label
 					htmlFor='my-drawer'
