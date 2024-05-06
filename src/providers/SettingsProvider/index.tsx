@@ -11,7 +11,7 @@ interface SettingsContextProps {
 	setIsLongBreak: (value: boolean) => void;
 }
 
-const SettingsContext = createContext<SettingsContextProps>({} as SettingsContextProps);
+export const SettingsContext = createContext<SettingsContextProps>({} as SettingsContextProps);
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
 	const [isTaskMode, setIsTaskMode] = useState(false);

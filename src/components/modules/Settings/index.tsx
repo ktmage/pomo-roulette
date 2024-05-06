@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { SettingsContext } from '@/providers/SettingsProvider';
+import { useContext } from 'react';
 
 export default function Settings() {
-	const [isTaskMode, setIsTaskMode] = useState(false);
-	const [isNoiseMode, setIsNoiseMode] = useState(false);
-	const [isAutoStart, setIsAutoStart] = useState(false);
-	const [isLongBreak, setIsLongBreak] = useState(false);
+	const {
+		isTaskMode,
+		setIsTaskMode,
+		isNoiseMode,
+		setIsNoiseMode,
+		isAutoStart,
+		setIsAutoStart,
+		isLongBreak,
+		setIsLongBreak,
+	} = useContext(SettingsContext);
 
 	return (
 		<>
