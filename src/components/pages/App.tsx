@@ -2,6 +2,8 @@ import { useTask, useTimer } from '@/hooks';
 import { CloseIcon, QuestionIcon, SettingsIcon, TaskIcon } from '../../utils/icons';
 import { Background } from '../atoms';
 import { Instructions, Settings } from '../modules';
+import { useContext } from 'react';
+import { SettingsContext } from '@/providers/SettingsProvider';
 
 const App = () => {
 	const {
@@ -19,6 +21,8 @@ const App = () => {
 			drawTask();
 		},
 	});
+
+	const { isTaskMode } = useContext(SettingsContext);
 
 	return (
 		<div className='drawer'>
@@ -66,9 +70,12 @@ const App = () => {
 							</button>
 						</div>
 
-						<div className='flex flex-col items-center justify-between min-h-80 space-y-10'>
-							<h1 className='text-4xl'>
-								{currentTask ? currentTask.name : 'POMOTTE'}
+						{/* <div className='flex flex-col items-center justify-between min-h-80 space-y-10'> */}
+						<div
+							className={`flex flex-col items-center justify-between min-h-80 space-y-10 ${isTaskMode ? 'min-h-80' : 'min-h-72'}`}
+						>
+							<h1 className={`text-4xl ${isTaskMode ? 'block' : 'hidden'}`}>
+								{currentTask ? currentTask.name : 'No task available'}
 							</h1>
 							<div className=' text-9xl'>{formatTime()}</div>
 							<div className='space-x-8'>

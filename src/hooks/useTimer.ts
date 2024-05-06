@@ -1,8 +1,10 @@
 import useSound from 'use-sound';
 import alertSfxUrl from '@/assets/alert.mp3';
 import buttonSfxUrl from '@/assets/button.mp3';
-import { useEffect, useState } from 'react';
+import noiseSfxUrl from '@/assets/noise.mp3';
+import { useContext, useEffect, useState } from 'react';
 import useLocalStorage from './useLocalStorage';
+import { SettingsContext } from '@/providers/SettingsProvider';
 
 interface useTimerProps {
 	onTimeUp?: () => void;
@@ -13,11 +15,15 @@ interface useTimerProps {
 }
 
 export default function useTimer(props?: useTimerProps) {
+	const { isNoiseMode, isLongBreak } = useContext(SettingsContext);
+
 	// 作業時間と休憩時間を定義
 	const WorkTime = 25 * 60;
 	const BreakTime = 5 * 60;
+	const LongBreakTime = 15 * 60;
 	// const WorkTime = 2;
 	// const BreakTime = 1;
+	// const LongBreakTime = 3;
 
 	const [lapCount, setLapCount] = useLocalStorage({ key: 'lapCount', initialValue: 0 });
 	const [timeLeft, setTimeLeft] = useState(WorkTime);
@@ -27,6 +33,7 @@ export default function useTimer(props?: useTimerProps) {
 	const [isReady, setIsReady] = useState(true);
 	const [playAlertSFX, { stop: stopAlertSFX }] = useSound(alertSfxUrl, { loop: true });
 	const [playButtonSFX] = useSound(buttonSfxUrl);
+	const [playNoiseSFX, { stop: stopNoiseSFX }] = useSound(noiseSfxUrl, { loop: true });
 
 	useEffect(() => {
 		let interval_id: number | undefined;
@@ -59,6 +66,10 @@ export default function useTimer(props?: useTimerProps) {
 		setIsRunning(false);
 		playAlert();
 		resetTimer();
+
+		if (isNoiseMode) {
+			stopNoiseSFX();
+		}
 	}
 
 	// タイマーをスタートする関数
@@ -66,6 +77,10 @@ export default function useTimer(props?: useTimerProps) {
 		props?.onStartTimer && props.onStartTimer();
 		setIsRunning(true);
 		playButtonSFX();
+
+		if (isWorking && isNoiseMode) {
+			playNoiseSFX();
+		}
 	}
 
 	// タイマーをストップする関数
@@ -73,6 +88,10 @@ export default function useTimer(props?: useTimerProps) {
 		props?.onStopTimer && props.onStopTimer();
 		setIsRunning(false);
 		playButtonSFX();
+
+		if (isNoiseMode) {
+			stopNoiseSFX();
+		}
 	}
 
 	// タイマーをリセットする関数
@@ -95,7 +114,13 @@ export default function useTimer(props?: useTimerProps) {
 	const resetTimer = () => {
 		if (isWorking) {
 			setIsWorking(false);
-			setTimeLeft(BreakTime);
+
+			// Long Breakが設定されている場合、3回ごとに長い休憩を取る。
+			if (isLongBreak && lapCount % 3 === 0) {
+				setTimeLeft(LongBreakTime);
+			} else {
+				setTimeLeft(BreakTime);
+			}
 		} else {
 			setLapCount((lap) => lap + 1);
 			setIsWorking(true);
