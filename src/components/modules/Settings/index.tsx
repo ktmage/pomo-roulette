@@ -2,16 +2,8 @@ import { SettingsContext } from '@/providers/SettingsProvider';
 import { useContext } from 'react';
 
 export default function Settings() {
-	const {
-		isTaskMode,
-		setIsTaskMode,
-		isNoiseMode,
-		setIsNoiseMode,
-		isAutoStart,
-		setIsAutoStart,
-		isLongBreak,
-		setIsLongBreak,
-	} = useContext(SettingsContext);
+	const { isTaskMode, setIsTaskMode, isNoiseMode, setIsNoiseMode, isLongBreak, setIsLongBreak } =
+		useContext(SettingsContext);
 
 	return (
 		<>
@@ -40,18 +32,6 @@ export default function Settings() {
 						checked={isNoiseMode}
 						onChange={(e) => {
 							setIsNoiseMode(e.target.checked);
-						}}
-					/>
-				</label>
-
-				<label className='label cursor-pointer'>
-					<span className='label-text'>Auto Start</span>
-					<input
-						type='checkbox'
-						className='toggle'
-						checked={isAutoStart}
-						onChange={(e) => {
-							setIsAutoStart(e.target.checked);
 						}}
 					/>
 				</label>
