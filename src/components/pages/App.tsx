@@ -72,7 +72,7 @@ const App = () => {
 
 						{/* <div className='flex flex-col items-center justify-between min-h-80 space-y-10'> */}
 						<div
-							className={`flex flex-col items-center justify-between min-h-80 space-y-10 ${isTaskMode ? 'min-h-80' : 'min-h-72'}`}
+							className={`flex flex-col items-center justify-between space-y-10 ${isTaskMode ? 'min-h-80' : 'min-h-72'}`}
 						>
 							<h1 className={`text-4xl ${isTaskMode ? 'block' : 'hidden'}`}>
 								{currentTask ? currentTask.name : 'No task available'}
