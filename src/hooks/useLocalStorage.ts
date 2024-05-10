@@ -9,12 +9,17 @@ export default function useLocalStorage<T>(props: useLocalStorageProps<T>) {
 	const [value, setValue] = useState<T>(initValue());
 
 	function initValue() {
-		const value = localStorage.getItem(props.key);
-		return value ? JSON.parse(value) : props.initialValue;
+		if (typeof window !== 'undefined') {
+			const value = window.localStorage.getItem(props.key);
+			return value ? JSON.parse(value) : props.initialValue;
+		}
+		return props.initialValue;
 	}
 
 	function saveValue(value: T) {
-		localStorage.setItem(props.key, JSON.stringify(value));
+		if (typeof window !== 'undefined') {
+			window.localStorage.setItem(props.key, JSON.stringify(value));
+		}
 	}
 
 	useEffect(() => {
