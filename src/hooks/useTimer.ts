@@ -18,13 +18,9 @@ interface useTimerProps {
 export default function useTimer(props?: useTimerProps) {
 	const { isNoiseMode, isLongBreak } = useContext(SettingsContext);
 
-	//   const WorkTime = 25 * 60;
-	//   const BreakTime = 5 * 60;
-	//   const LongBreakTime = 15 * 60;
-
-	const WorkTime = 5;
-	const BreakTime = 2;
-	const LongBreakTime = 3;
+	const WorkTime = 25 * 60;
+	const BreakTime = 5 * 60;
+	const LongBreakTime = 15 * 60;
 
 	const [lapCount, setLapCount] = useLocalStorage({
 		key: 'lapCount',
