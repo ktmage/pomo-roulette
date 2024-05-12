@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
 
 interface useLocalStorageProps<T> {
 	key: string;
@@ -16,15 +18,18 @@ export default function useLocalStorage<T>(props: useLocalStorageProps<T>) {
 		return props.initialValue;
 	}
 
-	function saveValue(value: T) {
-		if (typeof window !== 'undefined') {
-			window.localStorage.setItem(props.key, JSON.stringify(value));
-		}
-	}
+	const saveValue = useCallback(
+		(value: T) => {
+			if (typeof window !== 'undefined') {
+				window.localStorage.setItem(props.key, JSON.stringify(value));
+			}
+		},
+		[props.key],
+	);
 
 	useEffect(() => {
 		saveValue(value);
-	}, [value]);
+	}, [value, saveValue]);
 
 	return [value, setValue] as const;
 }

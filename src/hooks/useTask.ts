@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import useLocalStorage from './useLocalStorage';
+'use client';
+
+import { useEffect, useState } from 'react';
 
 // type Priority = 1 | 2 | 3 | 4 | 5;
 
@@ -10,9 +11,19 @@ interface Task {
 }
 
 export default function useTask() {
-	const [tasks, setTasks] = useLocalStorage<Task[]>({ key: 'tasks', initialValue: [] });
+	const [tasks, setTasks] = useState<Task[]>([]);
 	const [newTask, setNewTask] = useState<string>('');
 	const [currentTask, setCurrentTask] = useState<Task | null>(null);
+
+	// Hydration Error回避
+	// https://nextjs.org/docs/app/building-your-application/rendering/client-components#full-page-load
+	// https://zenn.dev/luvmini511/articles/71f65df05716ca
+	useEffect(() => {
+		const tasks = localStorage.getItem('tasks');
+		if (tasks) {
+			setTasks(JSON.parse(tasks));
+		}
+	}, []);
 
 	// タスクを抽選して、currentTaskにセットする関数
 	function drawTask() {
