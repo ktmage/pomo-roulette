@@ -1,3 +1,5 @@
+'use client';
+
 import { useTask, useTimer } from '@/hooks';
 import { CloseIcon, QuestionIcon, SettingsIcon, TaskIcon } from '../../utils/icons';
 import { Background } from '../atoms';
