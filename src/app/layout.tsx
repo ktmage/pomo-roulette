@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import './globals.css';
+import { Background } from '@/components/modules';
 
 export const metadata: Metadata = {
 	title: 'Pomomate',
