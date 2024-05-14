@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import './globals.css';
 import { Navbar } from '@/components/modules';
-import AppProvider from '@/providers/AppProvider';
+import AppProvider from '@/providers/AppProvider/AppProvider';
 import { Background } from '@/components/modules';
 
 export const metadata: Metadata = {

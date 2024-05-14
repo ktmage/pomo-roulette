@@ -1,4 +1,4 @@
-export default function Instructions() {
+export default function InstructionsPage() {
 	return (
 		<>
 			<h1>How to use</h1>

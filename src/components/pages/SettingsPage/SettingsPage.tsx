@@ -1,10 +1,11 @@
-import { SettingsContext } from '@/providers/SettingsProvider';
+'use client';
+
+import { SettingsContext } from '@/providers';
 import { useContext } from 'react';
 
-export default function Settings() {
+export default function SettingsPage() {
 	const { isTaskMode, setIsTaskMode, isNoiseMode, setIsNoiseMode, isLongBreak, setIsLongBreak } =
 		useContext(SettingsContext);
-
 	return (
 		<>
 			<h1>Settings</h1>

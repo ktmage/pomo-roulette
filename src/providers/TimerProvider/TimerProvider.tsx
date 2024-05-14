@@ -1,13 +1,13 @@
 'use client';
 
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
-import { SettingsContext } from '../SettingsProvider';
+import { SettingsContext } from '../SettingsProvider/SettingsProvider';
 import { useLocalStorage } from '@/hooks';
 import useSound from 'node_modules/use-sound/dist';
 import alertSfxUrl from '@/assets/alert.mp3';
 import buttonSfxUrl from '@/assets/button.mp3';
 import noiseSfxUrl from '@/assets/noise.mp3';
-import { TaskContext } from '../TaskProvider';
+import { TasksContext } from '../TasksProvider/TasksProvider';
 
 interface TimerContextProps {
 	formatTime: () => string;
@@ -21,7 +21,7 @@ export const TimerContext = createContext<TimerContextProps>({} as TimerContextP
 
 export const TimerProvider = ({ children }: { children: ReactNode }) => {
 	const { isNoiseMode, isLongBreak } = useContext(SettingsContext);
-	const { drawTask } = useContext(TaskContext);
+	const { drawTask } = useContext(TasksContext);
 
 	// const WorkTime = 25 * 60;
 	// const BreakTime = 5 * 60;

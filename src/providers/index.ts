@@ -1,3 +1,5 @@
-export { TimerContext } from './TimerProvider';
-export { SettingsContext } from './SettingsProvider';
-export { TaskContext } from './TaskProvider';
+export { default as AppProvider } from './AppProvider/AppProvider';
+
+export { TimerContext } from './TimerProvider/TimerProvider';
+export { SettingsContext } from './SettingsProvider/SettingsProvider';
+export { TasksContext } from './TasksProvider/TasksProvider';

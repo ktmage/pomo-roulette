@@ -1,10 +1,10 @@
 'use client';
 
 import { createContext, ReactNode, useCallback, useState } from 'react';
-import Task from '@/types/task';
+import Task from '@/types/Task';
 import { useLocalStorage } from '@/hooks';
 
-interface TaskContextProps {
+interface TasksContextProps {
 	tasks: Task[];
 	newTask: string;
 	setNewTask: (task: string) => void;
@@ -15,9 +15,9 @@ interface TaskContextProps {
 	updatePriority: (id: number, priority: number) => void;
 }
 
-export const TaskContext = createContext<TaskContextProps>({} as TaskContextProps);
+export const TasksContext = createContext<TasksContextProps>({} as TasksContextProps);
 
-export const TaskProvider = ({ children }: { children: ReactNode }) => {
+export const TasksProvider = ({ children }: { children: ReactNode }) => {
 	const [tasks, setTasks] = useLocalStorage<Task[]>({
 		key: 'tasks',
 		initialValue: [],
@@ -71,7 +71,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 	);
 
 	return (
-		<TaskContext.Provider
+		<TasksContext.Provider
 			value={{
 				tasks,
 				newTask,
@@ -84,6 +84,6 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 			}}
 		>
 			{children}
-		</TaskContext.Provider>
+		</TasksContext.Provider>
 	);
 };
