@@ -8,28 +8,23 @@ interface useLocalStorageProps<T> {
 }
 
 export default function useLocalStorage<T>(props: useLocalStorageProps<T>) {
-	const [value, setValue] = useState<T>(initValue());
-
-	function initValue() {
-		if (typeof window !== 'undefined') {
-			const value = window.localStorage.getItem(props.key);
-			return value ? JSON.parse(value) : props.initialValue;
-		}
-		return props.initialValue;
-	}
-
-	const saveValue = useCallback(
-		(value: T) => {
-			if (typeof window !== 'undefined') {
-				window.localStorage.setItem(props.key, JSON.stringify(value));
-			}
-		},
-		[props.key],
-	);
+	const [_value, _setValue] = useState<T>(props.initialValue);
 
 	useEffect(() => {
-		saveValue(value);
-	}, [value, saveValue]);
+		const value = localStorage.getItem(props.key);
+		if (value) {
+			_setValue(JSON.parse(value));
+		}
+	}, [props.key, _setValue]);
 
-	return [value, setValue] as const;
+	// localstorageを更新しつつstateを更新するsetter関数
+	const setValue = useCallback(
+		(value: T) => {
+			_setValue(value);
+			localStorage.setItem(props.key, JSON.stringify(value));
+		},
+		[props.key, _setValue],
+	);
+
+	return [_value, setValue] as const;
 }
