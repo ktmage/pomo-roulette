@@ -8,16 +8,16 @@ export default function AppPage() {
 	const { isTaskMode } = useContext(SettingsContext);
 
 	return (
-		<div className={`flex flex-grow justify-center items-center text-white`}>
+		<div className={`flex flex-grow justify-center items-center`}>
 			<div
 				className={`flex flex-col justify-center items-center ${isTaskMode ? 'gap-10' : 'gap-16'}`}
 			>
 				<p className={`text-4xl ${isTaskMode ? 'block' : 'hidden'}`}>
 					{currentTask ? currentTask.name : 'No task available'}
 				</p>
-				<p className='text-9xl'>{formatTime()}</p>
+				<p className='text-9xl text-base-content'>{formatTime()}</p>
 				<button
-					className='btn btn-neutral px-6 py-2'
+					className='btn px-6 py-2'
 					onClick={play}
 				>
 					{isAlertPlaying ? 'Stop Alert' : isRunning ? 'Stop' : 'Start'}
