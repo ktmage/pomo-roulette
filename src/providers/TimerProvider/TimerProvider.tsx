@@ -62,6 +62,7 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
 	const resetTimer = useCallback(() => {
 		if (isWorking) {
 			setIsWorking(false);
+			document.querySelector('html')?.setAttribute('data-theme', 'break');
 			if (isLongBreak && lapCount % 3 === 0) {
 				setTimeLeft(LongBreakTime);
 			} else {
@@ -71,6 +72,7 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
 			setLapCount(lapCount + 1);
 			setIsWorking(true);
 			setTimeLeft(WorkTime);
+			document.querySelector('html')?.setAttribute('data-theme', 'work');
 		}
 	}, [isWorking, lapCount, isLongBreak, LongBreakTime, BreakTime, WorkTime, setLapCount]);
 
@@ -126,6 +128,9 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
 	}, [isRunning, timeLeft, timeUp]);
 
 	const play = useCallback(() => {
+		// themeを変更するコード
+		// document.querySelector('html')?.setAttribute('data-theme', 'break');
+
 		if (isAlertPlaying) {
 			stopAlert();
 		} else if (isRunning) {
