@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
-interface NavbarProps {
-	title: string;
-}
-
 const Menu = [
+	{
+		title: 'home',
+		href: '/',
+	},
 	{
 		title: 'settings',
 		href: '/settings',
@@ -15,15 +15,15 @@ const Menu = [
 	},
 ];
 
-export default function Navbar(props: NavbarProps) {
+export default function Navbar() {
 	return (
-		<div className='navbar text-white'>
+		<div className='navbar'>
 			<div className='flex-1'>
 				<Link
 					href='/'
-					className='btn btn-ghost text-xl'
+					className='inline-flex h-12 min-h-12 flex-shrink-0 user-select-none cursor-default flex-wrap items-center justify-center px-4 text-center font-semibold text-xl'
 				>
-					{props.title}
+					Pomomate
 				</Link>
 			</div>
 			<div className='flex-none'>
@@ -37,7 +37,7 @@ export default function Navbar(props: NavbarProps) {
 						<li key={item.title}>
 							<Link
 								href={item.href}
-								className='btn btn-ghost'
+								className='btn btn-ghost text-base-content'
 							>
 								{item.title}
 							</Link>
