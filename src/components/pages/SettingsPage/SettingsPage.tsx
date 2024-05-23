@@ -6,13 +6,12 @@ import { useContext } from 'react';
 export default function SettingsPage() {
 	const { isTaskMode, setIsTaskMode, isNoiseMode, setIsNoiseMode, isLongBreak, setIsLongBreak } =
 		useContext(SettingsContext);
+
 	return (
-		<>
-			<h1>Settings</h1>
-			<hr />
-			<br />
-			{/* <p>Settings will be added soon.</p> */}
-			<div className='form-control'>
+		// ここが強引なので、後で修正する
+		<div className='px-96 pt-12 flex flex-col gap-4 grow'>
+			<h2>Settings</h2>
+			<div className='flex flex-col gap-4'>
 				<label className='label cursor-pointer'>
 					<span className='label-text'>Task Mode</span>
 					<input
@@ -49,6 +48,6 @@ export default function SettingsPage() {
 					/>
 				</label>
 			</div>
-		</>
+		</div>
 	);
 }
