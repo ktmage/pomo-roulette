@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
 const Menu = [
-	{
-		title: 'home',
-		href: '/',
-	},
+	// {
+	// 	title: 'home',
+	// 	href: '/',
+	// },
 	{
 		title: 'settings',
 		href: '/settings',
@@ -19,9 +19,15 @@ export default function Navbar() {
 	return (
 		<div className='navbar'>
 			<div className='flex-1'>
+				{/* <Link
+					href='/'
+					className='inline-flex h-12 min-h-12 flex-shrink-0 user-select-none cursor-default flex-wrap items-center justify-center px-4 text-center font-semibold text-xl '
+				>
+					Pomomate
+				</Link> */}
 				<Link
 					href='/'
-					className='inline-flex h-12 min-h-12 flex-shrink-0 user-select-none cursor-default flex-wrap items-center justify-center px-4 text-center font-semibold text-xl'
+					className='btn btn-ghost text-xl font-semibold'
 				>
 					Pomomate
 				</Link>
