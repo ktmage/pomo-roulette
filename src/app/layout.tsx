@@ -1,8 +1,6 @@
-import { Metadata } from 'next';
 import './globals.css';
 import { Navbar } from '@/components/modules';
 import AppProvider from '@/providers/AppProvider/AppProvider';
-import Head from 'next/head';
 
 // export const metadata: Metadata = {
 // 	title: 'Pomodoro Timer - Pomomate',
