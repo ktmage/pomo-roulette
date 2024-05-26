@@ -1,26 +1,35 @@
 'use client';
-import useSound from 'use-sound';
+
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { SettingsContext } from '../SettingsProvider/SettingsProvider';
+import { useLocalStorage } from '@/hooks';
+import useSound from 'node_modules/use-sound/dist';
 import alertSfxUrl from '@/assets/alert.mp3';
 import buttonSfxUrl from '@/assets/button.mp3';
 import noiseSfxUrl from '@/assets/noise.mp3';
-import { useContext, useEffect, useState, useCallback } from 'react';
-import useLocalStorage from './useLocalStorage';
-import { SettingsContext } from '@/providers/SettingsProvider';
+import { TasksContext } from '../TasksProvider/TasksProvider';
 
-interface useTimerProps {
-	onTimeUp?: () => void;
-	onStartTimer?: () => void;
-	onStopTimer?: () => void;
-	onResetTimer?: () => void;
-	onStartLap?: () => void;
+interface TimerContextProps {
+	formatTime: () => string;
+	play: () => void;
+	isRunning: boolean;
+	isAlertPlaying: boolean;
+	isWorking?: boolean;
 }
 
-export default function useTimer(props?: useTimerProps) {
+export const TimerContext = createContext<TimerContextProps>({} as TimerContextProps);
+
+export const TimerProvider = ({ children }: { children: ReactNode }) => {
 	const { isNoiseMode, isLongBreak } = useContext(SettingsContext);
+	const { drawTask } = useContext(TasksContext);
 
 	const WorkTime = 25 * 60;
 	const BreakTime = 5 * 60;
 	const LongBreakTime = 15 * 60;
+
+	// const WorkTime = 5;
+	// const BreakTime = 3;
+	// const LongBreakTime = 2;
 
 	const [lapCount, setLapCount] = useLocalStorage({
 		key: 'lapCount',
@@ -53,20 +62,21 @@ export default function useTimer(props?: useTimerProps) {
 	const resetTimer = useCallback(() => {
 		if (isWorking) {
 			setIsWorking(false);
+			document.querySelector('html')?.setAttribute('data-theme', 'break');
 			if (isLongBreak && lapCount % 3 === 0) {
 				setTimeLeft(LongBreakTime);
 			} else {
 				setTimeLeft(BreakTime);
 			}
 		} else {
-			setLapCount((lap) => lap + 1);
+			setLapCount(lapCount + 1);
 			setIsWorking(true);
 			setTimeLeft(WorkTime);
+			document.querySelector('html')?.setAttribute('data-theme', 'work');
 		}
 	}, [isWorking, lapCount, isLongBreak, LongBreakTime, BreakTime, WorkTime, setLapCount]);
 
 	const timeUp = useCallback(() => {
-		props?.onTimeUp && props.onTimeUp();
 		if (!isWorking) {
 			setIsReady(true);
 		}
@@ -76,25 +86,23 @@ export default function useTimer(props?: useTimerProps) {
 		if (isNoiseMode) {
 			stopNoiseSFX();
 		}
-	}, [isWorking, isNoiseMode, props, resetTimer, playAlert, stopNoiseSFX]);
+	}, [isWorking, isNoiseMode, resetTimer, playAlert, stopNoiseSFX]);
 
 	const startTimer = useCallback(() => {
-		props?.onStartTimer && props.onStartTimer();
 		setIsRunning(true);
 		playButtonSFX();
 		if (isWorking && isNoiseMode) {
 			playNoiseSFX();
 		}
-	}, [isWorking, isNoiseMode, props, playButtonSFX, playNoiseSFX]);
+	}, [isWorking, isNoiseMode, playButtonSFX, playNoiseSFX]);
 
 	const stopTimer = useCallback(() => {
-		props?.onStopTimer && props.onStopTimer();
 		setIsRunning(false);
 		playButtonSFX();
 		if (isNoiseMode) {
 			stopNoiseSFX();
 		}
-	}, [isNoiseMode, props, playButtonSFX, stopNoiseSFX]);
+	}, [isNoiseMode, playButtonSFX, stopNoiseSFX]);
 
 	const formatTime = useCallback((): string => {
 		const minutes = Math.floor(timeLeft / 60);
@@ -120,18 +128,33 @@ export default function useTimer(props?: useTimerProps) {
 	}, [isRunning, timeLeft, timeUp]);
 
 	const play = useCallback(() => {
+		// themeを変更するコード
+		// document.querySelector('html')?.setAttribute('data-theme', 'break');
+
 		if (isAlertPlaying) {
 			stopAlert();
 		} else if (isRunning) {
 			stopTimer();
 		} else if (isReady) {
-			props?.onStartLap && props.onStartLap();
+			drawTask();
 			setIsReady(false);
 			startTimer();
 		} else {
 			startTimer();
 		}
-	}, [isAlertPlaying, isRunning, isReady, startTimer, stopAlert, stopTimer, props]);
+	}, [isAlertPlaying, isRunning, isReady, startTimer, stopAlert, stopTimer, drawTask]);
 
-	return { formatTime, play, isRunning, isWorking, isAlertPlaying, lapCount };
-}
+	return (
+		<TimerContext.Provider
+			value={{
+				formatTime,
+				play,
+				isRunning,
+				isAlertPlaying,
+				isWorking,
+			}}
+		>
+			{children}
+		</TimerContext.Provider>
+	);
+};

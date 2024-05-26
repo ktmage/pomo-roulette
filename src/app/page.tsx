@@ -1,10 +1,6 @@
-import { SettingsProvider } from '@/providers';
-import App from '@/components/pages/App';
+// import { SettingsProvider, TaskProvider } from '@/providers';
+import { AppPage } from '@/components/pages';
 
-export default function RootPage() {
-	return (
-		<SettingsProvider>
-			<App />
-		</SettingsProvider>
-	);
+export default function Root() {
+	return <AppPage />;
 }
