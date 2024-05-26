@@ -23,13 +23,13 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
 	const { isNoiseMode, isLongBreak } = useContext(SettingsContext);
 	const { drawTask } = useContext(TasksContext);
 
-	// const WorkTime = 25 * 60;
-	// const BreakTime = 5 * 60;
-	// const LongBreakTime = 15 * 60;
+	const WorkTime = 25 * 60;
+	const BreakTime = 5 * 60;
+	const LongBreakTime = 15 * 60;
 
-	const WorkTime = 5;
-	const BreakTime = 3;
-	const LongBreakTime = 2;
+	// const WorkTime = 5;
+	// const BreakTime = 3;
+	// const LongBreakTime = 2;
 
 	const [lapCount, setLapCount] = useLocalStorage({
 		key: 'lapCount',
