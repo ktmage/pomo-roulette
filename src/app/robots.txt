@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /settings
+
+User-agent: *
+Disallow: /tasks
+
+User-agent: *
+Allow: /
