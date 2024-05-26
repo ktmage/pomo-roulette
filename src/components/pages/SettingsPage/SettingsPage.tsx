@@ -10,8 +10,8 @@ export default function SettingsPage() {
 	return (
 		// ここが強引なので、後で修正する
 		<div className='flex flex-col gap-4 pt-16 items-center'>
-			<h2>Settings</h2>
-			<label className='label cursor-pointer w-64'>
+			<h2 className='mb-8'>Settings</h2>
+			<label className='label cursor-pointer w-80'>
 				<span className='label-text'>Task Mode</span>
 				<input
 					type='checkbox'
@@ -23,7 +23,7 @@ export default function SettingsPage() {
 				/>
 			</label>
 
-			<label className='label cursor-pointer w-64'>
+			<label className='label cursor-pointer w-80'>
 				<span className='label-text'>Noise Mode</span>
 				<input
 					type='checkbox'
@@ -35,7 +35,7 @@ export default function SettingsPage() {
 				/>
 			</label>
 
-			<label className='label cursor-pointer w-64'>
+			<label className='label cursor-pointer w-80'>
 				<span className='label-text'>Long Break</span>
 				<input
 					type='checkbox'
