@@ -2,15 +2,23 @@ import { Metadata } from 'next';
 import './globals.css';
 import { Navbar } from '@/components/modules';
 import AppProvider from '@/providers/AppProvider/AppProvider';
+import Head from 'next/head';
 
-export const metadata: Metadata = {
-	title: 'Pomodoro Timer - Pomomate',
-	description: 'Pomomate is a simple Pomodoro timer app',
-};
+// export const metadata: Metadata = {
+// 	title: 'Pomodoro Timer - Pomomate',
+// 	description: 'Pomomate is a simple Pomodoro timer app',
+// };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en'>
+			<head>
+				<meta
+					name='description'
+					content='Pomomate is a simple Pomodoro timer app'
+				/>
+				<title>Pomodoro Timer - Pomomate</title>
+			</head>
 			<body>
 				<div
 					id='root'
