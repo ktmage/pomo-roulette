@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, ReactNode, useCallback, useState } from 'react';
-import Task from '@/types/Task';
+import Task from '@/types/task';
 import { useLocalStorage } from '@/hooks';
 
 interface TasksContextProps {
