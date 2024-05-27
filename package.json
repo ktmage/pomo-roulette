@@ -9,6 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@next/third-parties": "^14.2.3",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "next": "^14.2.3",
