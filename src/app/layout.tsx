@@ -1,6 +1,7 @@
 import './globals.css';
 import { Navbar } from '@/components/modules';
 import AppProvider from '@/providers/AppProvider/AppProvider';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 // export const metadata: Metadata = {
 // 	title: 'Pomodoro Timer - Pomomate',
@@ -10,6 +11,7 @@ import AppProvider from '@/providers/AppProvider/AppProvider';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en'>
+			<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ''} />
 			<head>
 				<meta
 					name='description'

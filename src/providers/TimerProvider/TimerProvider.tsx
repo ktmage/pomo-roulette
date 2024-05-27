@@ -128,9 +128,6 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
 	}, [isRunning, timeLeft, timeUp]);
 
 	const play = useCallback(() => {
-		// themeを変更するコード
-		// document.querySelector('html')?.setAttribute('data-theme', 'break');
-
 		if (isAlertPlaying) {
 			stopAlert();
 		} else if (isRunning) {
