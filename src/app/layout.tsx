@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body>
 				<div
 					id='root'
-					className='flex flex-col min-h-screen min-w-screen  transition-all duration-500 bg-base-100'
+					className='flex flex-col h-dvh h-dvw transition-all duration-500 bg-base-100'
 				>
 					<AppProvider>
 						<Navbar />
